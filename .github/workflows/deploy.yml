@@ -13,7 +13,18 @@ jobs: # 하나의 workflow 는 1개 이상의 job 으로 구성
     steps: # 특정 작업을 수행하는 가장 작은 단위 (job 은 여러 step 으로 구성)
       - name: Hello World 찍기
         run: echo "Hello World" # 실제 코드 작성
+
       - name: 여러 명령어 문장 작성하기
         run: | 
           echo "Good"
           echo "Morning"
+
+      - name: Github Actions 자체에 저장되어 있는 변수 사용 # commmit ID , repo Name 가져오기
+        run: |
+          echo $GITHUB_SHA 
+          echo $GITHUB_REPOSITORY
+
+      - name: 노출되면 안되는 값
+        run: |
+          echo ${{ secrets.TEST_CICD }}
+          
