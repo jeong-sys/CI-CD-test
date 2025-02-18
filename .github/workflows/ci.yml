@@ -7,6 +7,7 @@ on:
       - main
       - develop
   pull_request:
+    types: [opened, synchronize, reopened]
     branches:
       - main
       - develop
@@ -16,6 +17,9 @@ permissions: write-all
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SPRING_PROFILES_ACTIVE: test  # CI에서 H2 DB를 사용하도록 설정
+
     steps:
       - name: 레포지토리 가져옴
         uses: actions/checkout@v3
@@ -31,22 +35,22 @@ jobs:
         with:
           path: |
             ~/.gradle/caches
-            ~/.gradle.wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/gradle.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
       - name: Gradle 명령 실행을 위한 권한 부여
         run: chmod +x gradlew
 
-      - name: Gradle build 수행
+      - name: Gradle build 수행 (테스트 포함)
         run: ./gradlew clean build
 
       - name: 테스트 결과를 PR에 코멘트로 등록
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
         with:
-          files: "**/build/tests-results/test/TEST-*.xml"
+          files: "**/build/test-results/test/TEST-*.xml"
 
       - name: 테스트 실패 시, 실패한 코드 라인에 Check 코멘트 등록
         uses: mikepenz/action-junit-report@v3
@@ -56,10 +60,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cleanup Gradle Cache
-        if: ${{ always() }}
+        if: always()
         run: |
           rm -f ~/.gradle/caches/modules-2/modules-2.lock
-          rm -f !/.gradle/caches/modules-2/gc.properties
-          
-
-
+          rm -f ~/.gradle/caches/modules-2/gc.properties

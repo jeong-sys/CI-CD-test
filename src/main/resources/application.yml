@@ -2,10 +2,41 @@ spring:
   application:
     name: wooamo_test
   config:
-    import: optional:file:env[.properties]
+    import: "optional:file:.env[.properties]"  # .env ???? ?? ?? ??
 
+  profiles:
+    active: local  # ??? (?? ??) ? CI/CD??? `test`? ??
+
+---
+# ?? ?? (MariaDB ??)
+spring:
+  config:
+    activate:
+      on-profile: local  # ?? ???? (?? ??)
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/sample
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # ?? ????? update ?? none
+    show-sql: true
+
+---
+# ??? ?? (CI/CD?? H2 ??)
+spring:
+  config:
+    activate:
+      on-profile: test  # CI/CD?? `SPRING_PROFILES_ACTIVE=test`? ???? ? ??? ???
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop  # ??? ????? ?? ??/??
+    show-sql: true
