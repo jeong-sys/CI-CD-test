@@ -41,7 +41,7 @@ public class UserControllerTest {
 
     @Test
     void testGetUserByEmail() {
-        User user = new User(1L, "홍길동", "hong@example.com");
+        User user = new User(1, "홍길동", "hong@example.com");
         when(userService.findByUserEmail("hong@example.com")).thenReturn(Optional.of(user));
 
         ResponseEntity<User> response = userController.getUserByEmail("hong@example.com");
