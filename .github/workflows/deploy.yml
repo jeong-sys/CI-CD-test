@@ -1,4 +1,4 @@
-name: Github Action 실행시켜보기 # Workflow (하나의 단위)
+name: Github Action 실행시켜보기(CD 자동화) # Workflow (하나의 단위)
 
 on: # Event (실행 시점 설정 : 어느 시점에 github actions 의 로직을 실행할건지)
   push: # main 브랜치에 push 된 경우
