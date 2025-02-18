@@ -40,6 +40,7 @@ jobs: # 하나의 workflow 는 1개 이상의 job 으로 구성
           envs: APPLICATION_PROPERTIES
           script_stop: true
           script: | # 실제 pull 하고 build 하는 과정 작성 (test 제외)
+            echo "SH 연결 성공"
             cd /home/ubuntu/CI-CD-test
             rm -rf src/main/resources/application.yml
             git pull origin main
