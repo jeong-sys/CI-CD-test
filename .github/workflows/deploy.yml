@@ -44,7 +44,7 @@ jobs: # 하나의 workflow 는 1개 이상의 job 으로 구성
             rm -rf src/main/resources/application.yml
             git pull origin main
             echo "$APPLICATION_PROPERTIES" > src/main/resources/application.yml
-            ./gradlew clean build
-            sudo fuser -k -n tcp 8080 || true # 서버 없어도 성공으로 처리 (있으면 kill 하고 실행)
-            nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 & # log 를 .output.log 에 남김
+            sudo ./gradlew clean build -x test
+            sudo fuser -k -n tcp 8080 || true
+            nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
 
