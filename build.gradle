@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.2'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'jacoco'
     id 'org.sonarqube' version '4.2.1.3168'
 }
 
@@ -27,22 +26,21 @@ repositories {
 
 sonar {
     properties {
-        property 'sonar.host.url', 'https://sonarcloud.io'
-        property 'sonar.organization', 'organizationKey'
-        property 'sonar.projectKey', 'projectKey'
-        property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
+        property "sonar.projectKey", "jeong-sys_CI-CD-test"
+        property "sonar.organization", "YJ-Heo"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property 'sonar.sources', 'src'
+        property 'sonar.language', 'java'
+        property 'sonar.sourceEncoding', 'UTF-8'
+        property "sonar.profile", "Sonar way"
+        property 'sonar.test.inclusions', '**/*Test.java'
+        // 테스트 커버리지에서 제외할 클래스
+        property 'sonar.exclusions', '**/Q*.java, **/config/**'
+        property 'sonar.java.coveragePlugin', 'jacoco'
+        // JaCoCo Coverage Report 주소
+        property 'sonar.coverage.jacoco.xmlReportPaths', "${project.rootDir}/support/jacoco/build/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
     }
 }
-
-jacocoTestReport {
-    reports {
-        xml {
-            enabled true  // xml 리포트를 활성화
-            destination file("$buildDir/reports/jacoco/test/jacocoTestReport.xml")
-        }
-    }
-}
-
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

@@ -50,6 +50,13 @@ jobs:
       - name: Gradle build 수행 (테스트 포함)
         run: ./gradlew clean build
 
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
       # SonarCloud 분석을 위한 빌드 및 Jacoco 리포트 생성
       - name: SonarCloud 분석
         run: ./gradlew build jacocoTestReport sonar --info
