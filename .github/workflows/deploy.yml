@@ -29,24 +29,26 @@ jobs: # 하나의 workflow 는 1개 이상의 job 으로 구성
           echo ${{ secrets.TEST_CICD }}
 
       # 자동 배포시, 민감한 정보에 대한 처리
-      - name: SSH(원격 접속)으로 EC2 접속하기
-        uses: appleboy/ssh-action@v1.0.3 # 라이브러리
-        env: # 환경 변수 설정
-          APPLICATION_PROPERTIES: ${{ secrets.APPLICATION_PROPERTIES }}
-        with:
-          host: ${{ secrets.EC2_HOST }} # ec2 ip 주소
-          username: ${{ secrets.EC2_USERNAME }} # ec2 이름 : ubuntu 기본 값
-          key: ${{ secrets.EC2_PRIVATE_KEY }} # key pair 내용 복사
-          envs: APPLICATION_PROPERTIES
-          script_stop: true
-          script: | # 실제 pull 하고 build 하는 과정 작성 (test 제외)
-            echo "SSH 연결 성공"
-            cd /home/ubuntu/CI-CD-test
-            rm -rf src/main/resources/application.yml
-            git pull origin main
-            echo "$APPLICATION_PROPERTIES" > src/main/resources/application.yml
-            sudo ./gradlew clean build -x test
-            echo "build 성공"
-            sudo fuser -k -n tcp 8080 || true
-            nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
+      ## EC2 접근 timeout 으로 주석 처리 (동작 o)
+
+#      - name: SSH(원격 접속)으로 EC2 접속하기
+#        uses: appleboy/ssh-action@v1.0.3 # 라이브러리
+#        env: # 환경 변수 설정
+#          APPLICATION_PROPERTIES: ${{ secrets.APPLICATION_PROPERTIES }}
+#        with:
+#          host: ${{ secrets.EC2_HOST }} # ec2 ip 주소
+#          username: ${{ secrets.EC2_USERNAME }} # ec2 이름 : ubuntu 기본 값
+#          key: ${{ secrets.EC2_PRIVATE_KEY }} # key pair 내용 복사
+#          envs: APPLICATION_PROPERTIES
+#          script_stop: true
+#          script: | # 실제 pull 하고 build 하는 과정 작성 (test 제외)
+#            echo "SSH 연결 성공"
+#            cd /home/ubuntu/CI-CD-test
+#            rm -rf src/main/resources/application.yml
+#            git pull origin main
+#            echo "$APPLICATION_PROPERTIES" > src/main/resources/application.yml
+#            sudo ./gradlew clean build -x test
+#            echo "build 성공"
+#            sudo fuser -k -n tcp 8080 || true
+#            nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
 
