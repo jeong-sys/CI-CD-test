@@ -65,6 +65,9 @@ cloud:
       secret-key: ${AWS_SECRET_KEY}
     region:
       static: ap-northeast-2
+payment:
+  toss:
+    test_secret_api_key: ${TOSS_TEST_SECRET_KEY}
 ---
 spring:
   config:
@@ -113,7 +116,7 @@ cloud:
     region:
       static: ap-northeast-2
 
-#payment:
-#  toss:
-#    test_secret_api_key: ${TOSS_TEST_SECRET_KEY}
+payment:
+  toss:
+    test_secret_api_key: ${TOSS_TEST_SECRET_KEY}
 ---
