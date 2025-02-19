@@ -19,7 +19,7 @@ public class TestController {
     public ResponseEntity<String> test() {
         System.out.println("test3");
         System.out.println("########### + " + DATABASE_USERNAME);
-        return ResponseEntity.ok("Hello World test !!!!!");
+        return ResponseEntity.ok("Hello World test !!!");
     }
 
     @Value("${DATABASE_USERNAME}")
