@@ -3,6 +3,7 @@ package com.example.wooamo_test.controller;
 import com.example.wooamo_test.entity.User;
 import com.example.wooamo_test.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +18,12 @@ public class TestController {
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         System.out.println("test3");
+        System.out.println("########### + " + DATABASE_USERNAME2);
         return ResponseEntity.ok("Hello World test !!!!!");
     }
+
+    @Value("${DATABASE_USERNAME2}")
+    private String DATABASE_USERNAME2;
 
     @PostMapping
     public ResponseEntity<User> saveUser(@RequestBody User user) {
