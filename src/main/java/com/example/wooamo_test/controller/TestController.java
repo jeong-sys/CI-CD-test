@@ -18,12 +18,8 @@ public class TestController {
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         System.out.println("test3");
-        System.out.println("########### + " + DATABASE_USERNAME);
         return ResponseEntity.ok("Hello World test !!!");
     }
-
-    @Value("${DATABASE_USERNAME}")
-    private String DATABASE_USERNAME;
 
     @PostMapping
     public ResponseEntity<User> saveUser(@RequestBody User user) {
